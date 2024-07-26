@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Lomo Copy';
+    src: local('Lomo Copy Midi'), local('Lomo-Copy-Midi'),
+        url('LomoCopyLTStd-Midi.woff2') format('woff2'),
+        url('LomoCopyLTStd-Midi.woff') format('woff'),
+        url('LomoCopyLTStd-Midi.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+

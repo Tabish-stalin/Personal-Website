@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Tabish OS</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 400px;
+    }
+
+    @font-face {
+      font-family: 'Lomo Copy Midi';
+      src: url('https://replit.com/@stalinreborn125/yayyy#LomoCopyLTStd-Midi/LomoCopyLTStd-Midi.woff2') format('woff2'),
+        url('https://replit.com/@stalinreborn125/yayyy#LomoCopyLTStd-Midi/LomoCopyLTStd-Midi.woff') format('woff'),
+        url('https://replit.com/@stalinreborn125/yayyy#LomoCopyLTStd-Midi/LomoCopyLTStd-Midi.ttf') format('truetype');
+    }
+  </style>
+
+</head>
+
+<body
+  style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; margin: 0; background-color: #000; font-family: 'Lomo Copy Midi', monospace;">
+  <!-- Your content here -->
+</body>
+
+</html>
+
+
+
+
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;">
+  <video id="videoElement" autoplay muted loop
+    style="position: absolute; top: 0; opacity: 0.5; left: 0; display: none; width: 100%; filter: brightness(100%) blur(4px) contrast(90%); height: 100%; z-index: -1; object-fit: cover;">
+    <source src="looping.mp4" type="video/mp4">
+  </video>
+</div>
+<div style="position: absolute; width: 100%; top: 0; display: flex; justify-content: space-between; z-index: 2000; align-items: center; background-color: #00000030; color: #fff
+    ; margin: 0; pointer-events: none;">
+  <p style="margin-left: 16px; font-weight: 600;">TabishOS</p>
+  <div style="display: flex; flex-direction: row; align-items: center;">
+    <p onclick="toggleMusic()"
+      style="pointer-events: auto; cursor: pointer; padding: 4px 12px; background-color: rgba(255, 255, 255, 0.1); pointer; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.0); border: 1px solid transparent; transition: box-shadow 0.3s ease; border-radius: 16px;"
+      id="musicToggle" onmouseover="this.style.boxShadow = 'inset 0 0 0 1px rgba(255, 255, 255, 0.5)'"
+      onmouseout="this.style.boxShadow = 'none'">
+      Motivational Track
+    </p>
+
+
+    <p id="time" style="margin-right: 16px; margin-left: 16px">Time</p>
+  </div>
+
+</div>
+<div id="winowApplications"
+  style="height: calc(100% - 128px); width: 100%; z-index: 1; display: flex; padding: 16px; flex-direction: column;">
+  <div id="contactIcon" onclick="openIcon('contact')"
+    style="cursor: pointer; align-items: center; border-radius: 8px; width: fit-content; padding: 8px; display: flex; flex-direction: column;">
+    <img style="height: 70px; width: 70px;  border-radius: 16px; margin: 0px"
+      src="contact4.jpg" />
+    <p style="margin: 0px; font-size: 12px; margin-top: 4px; font-weight: 500; color: #fff">Contact</p>
+  </div>
+  <div id="aboutMeIcon" onclick="openIcon('aboutMe')"
+    style="cursor: pointer; align-items: center; border-radius: 8px; width: fit-content; padding: 8px; display: flex; flex-direction: column;">
+    <img style="height: 55px; width: 55px;  border-radius: 16px; margin: 0px"
+      src="docicon.jpg" />
+    <p style="margin: 0px; font-size: 12px; margin-top: 4px; font-weight: 500; color: #fff">aboutMe</p>
+  </div>
+
+  <div id="projectsIcon" onclick="openIcon('projects')"
+    style="cursor: pointer; align-items: center; border-radius: 8px; width: fit-content; padding: 8px; display: flex; flex-direction: column;">
+    <img style="height: 64px; width: 64px;  border-radius: 16px; margin: 0px"
+      src="hahalolkillme.jpg" />
+    <p style="margin: 0px; font-size: 12px; margin-top: 4px; font-weight: 500; color: #fff">Projects</p>
+  </div>
+
+</div>
+<!-- #start template -->
+<!-- <div id="projects" onclick="tapWindow(document.getElementById('projects'))"
+    style="align-items: center; border: 1px solid black; border-radius: 16px; background-color: #fff; width: 500px; position: absolute; justify-content: center; flex-direction: column; display: none">
+    <div id="projectshandle"
+      style="display: flex; align-items: center; background-color: #F6F6F6; border-radius: 16px 16px 0px 0px; justify-content: space-between; width: 100%">
+      <div onclick="closeElement(document.getElementById('projects'))"
+        style="cursor: pointer; height: 16px; width: 16px; background-color: red; border-radius: 16px; margin-left: 16px">
+      </div>
+      <p>Template</p>
+      <div style="height: 16px; width: 16px; border-radius: 16px; margin-right: 16px"></div>
+    </div>
+    <div style="width: calc(100% - 32px);">
+      <p>Content</p>
+    </div>
+  </div> -->
+<!-- stop -->
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+</div>
+
+<div id="contact" onclick="tapWindow(document.getElementById('contact'))"
+  style="align-items: center; border: 1px solid white; border-radius: 16px; background-color: #fff; width: 500px; position: absolute; justify-content: center; flex-direction: column; display: none">
+  <div id="contacthandle"
+    style="display: flex; align-items: center; background-color: #F6F6F6; border-radius: 16px 16px 0px 0px; justify-content: space-between; width: 100%">
+    <div onclick="closeElement(document.getElementById('contact'))"
+      style="cursor: pointer; height: 16px; width: 16px; background-color: red; border-radius: 16px; margin-left: 16px">
+    </div>
+    <p>Message Tabish</p>
+    <div style="height: 16px; width: 16px; border-radius: 16px; margin-right: 16px"></div>
+  </div>
+  <div style="width: calc(100% - 32px);">
+    <div id="chat">
+      <p class="tabish_message">
+        Hey there, welcome to
+        my inbox.</p>
+      <img src="IMG_3072.jpg" style="width: 120px; border-radius: 16px" />
+      <p class="tabish_message">You can send texts here & they'll ping on my phone instantly</p>
+      <p class="tabish_message">Feel free to also send me an email at <a href="mailto: tabish.ahmad20052005@gmail.com"
+          style="color: blue">tabish.ahmad20052005@gmail.com</a>
+
+      </p>
+    </div>
+
+    <div
+      style="flex-direction: row; align-items: center; margin-bottom: 16px; justify-content: space-between; display: flex;">
+      <input type="text" id="messageInput" onchange="awaitingResponse = false"
+        style="padding: 6px 10px; width: calc(100%); border: 1px solid #ccc; border-radius: 4px; font-size: 14px; outline: none; vertical-align: middle;" />
+      <div
+        style="display: flex; align-items: center; justify-content: center; font-size: 14px; margin-left: 16px; outline: none;">
+        <p style="margin: 0; cursor: pointer; color: #CE41FF" onclick="sendMessage()">Send</p>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="projects" onclick="tapWindow(document.getElementById('projects'))"
+  style="align-items: center; border: 1px solid black; border-radius: 16px; background-color: #fff; width: 512px; position: absolute; justify-content: center; flex-direction: column; display: none">
+  <div id="projectshandle"
+    style="display: flex; align-items: center; background-color: #F6F6F6; border-radius: 16px 16px 0px 0px; justify-content: space-between; width: 100%">
+    <div onclick="closeElement(document.getElementById('projects'))"
+      style="cursor: pointer; height: 16px; width: 16px; background-color: red; border-radius: 16px; margin-left: 16px">
+    </div>
+    <p>Projects</p>
+    <div style="height: 16px; width: 16px; border-radius: 16px; margin-right: 16px"></div>
+  </div>
+
+  <div id="icon-container"
+    style="display: grid; max-height: 600px; padding-left: 16px; padding-right: 16px; padding-top: 16px; padding-bottom: 16px; overflow-y: scroll; grid-template-columns: repeat(1, 1fr); gap: 0px;">
+
+    <script>
+      // Your array of objects
+      const icons = [
+        {
+          id: "mealPackIcon",
+          imgSrc: "DreamShaper_v7_create_an_icon_for_EmpathyBot_1.jpg",
+          title: "Orpheus",
+          description: "With the goal of providing mental health support', i designed this chatbot using OpenAI's LLM API.",
+          links: [
+          
+            {
+              title: "Project URL",
+              url: "https://equatorialabandonedapache.stalinreborn125.repl.co"
+            }
+          ]
+        },
+        {
+          id: "givingGiraffeMeIcon",
+          imgSrc: "uber.png",
+          title: "Uberability",
+          description: "Participated in the Uber Hackathon and crafted a really interesting proposal that adressed the accesibility issues related to the current playing field.",
+          links: [
+            {
+              title: "Video Demo",
+              url: "https://youtu.be/AJELAge_Eas?si=Z5MS9QPE1m46CITp"
+            },
+            {
+              title: "Proposal",
+              url: "UGH_ProductDesign_Seaborn_EuropeCentral_Asia 3.pdf"
+            },
+            {
+              title: "Pitch Deck",
+              url: "https://www.canva.com/design/DAFx_IBP-xI/no1xKH332F1eiye11omHXQ/edit?utm_content=DAFx_IBP-xI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
+            }
+          ]
+        },
+        {
+          id: "coconutIcon",
+          imgSrc: "5766376.png",
+          title: "Research",
+          description: "Conducted research and co-authored an article on the feasibility of integrating machine learning in the diagnostic processs of Parkinson's.",
+          links: [
+            {
+              title: "Project URL",
+              url: "EEG Review Article-3.pdf"
+            },
+          
+          ]
+        },
+        {
+          id: "dormanIcon",
+          imgSrc: "327243878_791493559232108_1911004099225917979_n.jpg",
+          title: "ARSSDC",
+          description: "Started with a friend as the only programming club at our school. We host various workshops, and the club is still active after our graduation.",
+          links: [
+            {
+              title: "Project#1",
+              url: "VA ARSSDC FINAL 2.pdf"
+            },
+            {
+              title: "Project#2",
+              url: "Bellevistat 2022-Ad Astra-Lahore Grammar School Gulberg 2.pdf"
+            },
+            {
+              title: "Project#3",
+              url: "Aphroditav Space Settlement Contract.pdf"
+            },
+            
+          ]
+        },
+        {
+          id: "auroraIcon",
+          imgSrc: "images.jpeg",
+          title: "BL4S",
+          description: "A weather SMS tool I worked on with Matt. It sends daily weather updates and even suggests what to wear.",
+          links: [
+            {
+              title: "Project URL",
+              url: "Proposal Template-2 2.pdf"
+            }
+          ]
+        },
+        {
+          id: "penguinPairIcon",
+          imgSrc: "rl6z0RyAjSZOdU9nEqljeZ4plVc.webp",
+          title: "Autonomica",
+          description: "This is a game created over a weekend with my friend Dieter. Check it out, it's fun and currently available only on iOS.",
+          links: [
+            {
+              title: "Website URL",
+              url: "http://Autonomica.framer.ai"
+            }
+          ]
+        },
+        {
+          id: "telegradeIcon",
+          imgSrc: "https://cloud-dytdcke80-hack-club-bot.vercel.app/0screenshot_2023-06-09_at_12.54.25_pm.png",
+          title: "Telegrade",
+          description: "An app built with Dieter aimed at helping small businesses grow their social media presence.",
+          links: [
+            {
+              title: "App Store Download",
+              url: "https://apps.apple.com/us/app/telegrade/id1667140470"
+            }
+          ]
+        },
+        {
+          id: "serenidadIcon",
+          imgSrc: "https://cloud-1rd9210b7-hack-club-bot.vercel.app/0image.png",
+          title: "Serenidad Podcast",
+          description: "This is a bit of a secret project, but feel free to check it out. It already has over 80 episodes.",
+          links: [
+            {
+              title: "Spotify Link",
+              url: "https://open.spotify.com/show/7LW5340gHWfr7nbH0PehTL"
+            }
+          ]
+        },
+        {
+          id: "bikeIcon",
+          imgSrc: "https://cloud-7vio1pyee-hack-club-bot.vercel.app/0bikeapp.png",
+          title: "Bike App UI",
+          description: "I built the UI for a fictional bike shop as part of the Google UX Design Specialization.",
+          links: [
+            {
+              title: "Figma Prototype",
+              url: "https://www.figma.com/proto/2JjWx4iCsGnos1JUI4gW3c/Proper-Bike-App?page-id=0%3A1&type=design&node-id=24-347&viewport=-68%2C-486%2C0.21&scaling=scale-down&starting-point-node-id=24%3A347&show-proto-sidebar=1"
+            }
+          ]
+        },
+        {
+          id: "wireUsIcon",
+          imgSrc: "https://cloud-1f5hszzzt-hack-club-bot.vercel.app/0wireus.png",
+          title: "WireUs",
+          description: "My first introduction to software design. I helped with the UI design for this coding challenge platform in collaboration with Pooja Gera (the creator of the project).",
+          links: [
+            {
+              title: "Figma File",
+              url: "https://www.figma.com/file/nPgIxuGC3bGYo5uvIKlCot/Untitled-(Copy)?type=design&node-id=0%3A1&t=yw2Qjv0iMpbEc0FK-1"
+            },
+            {
+              title: "WireUs Twitter",
+              url: "https://twitter.com/wireus2020?lang=en"
+            }
+          ]
+        },
+        {
+          id: "carolinaHacks",
+          imgSrc: "https://cloud-8bqyah0fq-hack-club-bot.vercel.app/0carolinahacks.png",
+          title: "Carolina Hacks",
+          description: "The first student-led hackathon in South Carolina. I organized this event with my friend Dieter.",
+          links: [
+            {
+              title: "Website",
+              url: "https://www.carolinahacks.com/"
+            },
+            {
+              title: "Carolina Hacks Documentary",
+              url: "https://drive.google.com/file/d/1gOpYcsQk7mf2ETHbtHarUdKUDJAMFL-w/view?usp=sharing"
+            }
+          ]
+        },
+       
+      ];
+
+
+
+      const iconContainer = document.getElementById('icon-container');
+
+      icons.forEach(icon => {
+        const divWrapper = document.createElement('div');
+        const divHeading = document.createElement('div');
+
+        const divIcon = document.createElement('div');
+        const img = document.createElement('img');
+        const p = document.createElement('p');
+        const description = document.createElement('p');
+        const linksContainer = document.createElement('div'); // Container for links/buttons
+
+        divHeading.style.cssText = "display: flex; flex-direction: row; align-items: center; gap: 8px;";
+
+        divWrapper.style.cssText = "align-items: center; background-color: #F6F6F6; border-radius: 16px; margin-bottom: 16px; padding: 16px; display: flex; flex-direction: column;";
+        img.style.cssText = "height: 48px; width: 48px; border-radius: 16px; margin: 0px;";
+        p.style.cssText = "margin: 0px; padding: 0px; font-size: 16px; margin-top: 4px; font-weight: 500; color: #000;";
+        description.style.cssText = "margin-top: 8px; margin-bottom: 0px;";
+        linksContainer.style.cssText = "display: flex; gap: 8px; align-items: left; justify-content: start; width: 100%; margin-top: 8px;";
+
+        divIcon.id = icon.id;
+        img.src = icon.imgSrc;
+        p.textContent = icon.title;
+        description.textContent = icon.description;
+
+        divHeading.appendChild(img);
+        divHeading.appendChild(p);
+        divIcon.appendChild(divHeading);
+
+        divIcon.appendChild(description);
+
+        divWrapper.appendChild(divIcon);
+        divWrapper.appendChild(linksContainer); // Append links container to the wrapper
+
+        icon.links.forEach(link => {
+          const linkButton = document.createElement('a');
+          linkButton.href = link.url;
+          linkButton.textContent = link.title;
+          linkButton.style.cssText = "display: inline-block; padding: 6px 12px; background-color: #4E75FF; color: #fff; border-radius: 16px; text-decoration: none;";
+
+          linksContainer.appendChild(linkButton); // Append link button to the links container
+        });
+
+        iconContainer.appendChild(divWrapper);
+      });
+
+
+    </script>
+
+  </div>
+</div>
+
+
+<div id="aboutMe" onclick="tapWindow(document.getElementById('aboutMe'))"
+  style="align-items: center; border: 1px solid black; border-radius: 16px; background-color: #fff; width: 500px; position: absolute; justify-content: center; flex-direction: column; display: none">
+  <div id="aboutMehandle"
+    style="display: flex; align-items: center; background-color: #F6F6F6; border-radius: 16px 16px 0px 0px; justify-content: space-between; width: 100%">
+    <div onclick="closeElement(document.getElementById('aboutMe'))"
+      style="cursor: pointer; height: 16px; width: 16px; background-color: red; border-radius: 16px; margin-left: 16px">
+    </div>
+    <p>aboutMe.txt</p>
+    <div style="height: 16px; width: 16px; border-radius: 16px; margin-right: 16px"></div>
+  </div>
+  <div style="font-family: Courier; width: calc(100% - 32px);">
+
+
+    <p style="outline: none;" contenteditable="true">Hello world, 👋
+      </br>
+      </br>
+
+      <img src="IMG_2477.JPG" style="width: 120px; border-radius: 16px" />
+      </br>
+      </br>
+
+      I am a <span id="age"></span> year old aspiring machine learning engineer with an interest in the liberal arts and
+      a creator of
+      many
+      side projects (many of which you'll find here).
+      </br>
+      </br>
+      I've neglected creating a personal website because I've found them to be mundane and self-obsessed. I am now
+      meeting a lot of people, so I
+      developed TabishOS to provide a snapshot of "Who Tabish Is" without feeling like an ad.
+      </br>
+      </br>
+      Explore the site to
+      get to know me a bit & let's chat
+      soon!
+
+    </p>
+  </div>
+</div>
+<div id="welcome" onclick="tapWindow(document.getElementById('welcome'))"
+  style="justify-content: center; align-items: center; display: flex; flex-direction: column; border: 2px solid white; padding: 16px; border-radius: 16px; background-color: #000; position: absolute; z-index: 1;">
+  <div style="justify-content: start; display: flex; align-items: left; width: 100%">
+
+  </div>
+  <img style="height: 96px; width: 96px; border-radius: 64px; object-fit: cover;"
+    src="https://media.tenor.com/K3uxrqffdCAAAAAC/capybara-orange.gif" />
+  <div style="margin: 8;  text-align: center;">
+    <h1 style="color: white;">Tabish OS</h1>
+
+
+    <p style="color: white;text-align: center; margin: 0">
+      <dfn>TabishOS</dfn> is a feature-limited <abbr title="Operating System">OS</abbr> to answer the <br />
+      unanswerable
+      question of <code>"who is Tabish?"</code>
+    </p>
+    <p>
+      Developed by Tabish
+    </p>
+    <div style="width: 100%; justify-content: center; display: flex; align-items: center;">
+      <p onclick="closeElement(document.getElementById('welcome'))"
+        style="text-align: center; width: fit-content; padding: 8px 16px; border-radius: 24px; color: white; cursor: pointer; border: 1px solid transparent; transition: border-color 0.3s ease; margin-bottom: 0px;text-decoration: underline;"
+
+        onmouseover="this.style.borderColor = 'blue';" onmouseout="this.style.borderColor = 'transparent';">
+        🚀 Vanisheth 🚀
+      </p>
+    </div>
+
+  </div>
+
+</div>
+<script>
+  var selectedIcon = null
+  var topIndex = 3
+  var awaitingResponse = false
+  function sendMessage() {
+    if (!awaitingResponse) {
+      var messageContent = document.getElementById("messageInput").value
+      // Create a new <p> element
+      var paragraph = document.createElement('p');
+
+      // Set the text content of the <p> element
+      paragraph.textContent = messageContent
+
+
+      // Find the target div by its ID
+      var targetDiv = document.getElementById('chat');
+      paragraph.classList.add("my_message")
+
+      // Append the <p> element to the target div
+      targetDiv.appendChild(paragraph);
+      awaitingResponse = true
+      sendSMS(messageContent)
+
+
+    }
+
+  }
+  function toggleMusic() {
+    var video = document.getElementById("videoElement");
+    var musicToggle = document.getElementById("musicToggle");
+
+    if (video.muted) {
+      video.muted = false;
+      video.style.display = "block";
+      video.play(); // Play the video
+      musicToggle.textContent = "Mute Music";
+    } else {
+      video.muted = true;
+      video.style.display = "none";
+      musicToggle.textContent = "Play Music";
+    }
+  }
+
+
+
+
+  function tapWindow(elmnt) {
+    elmnt.style.zIndex = topIndex++;
+  }
+
+  function openIcon(name) {
+    if (selectedIcon == document.getElementById(name + "Icon")) {
+      openElement(document.getElementById(name))
+      map.invalidateSize()
+      selectedIcon = null
+      document.getElementById(name + "Icon").style.backgroundColor = "rgba(85, 166, 241, 0.0)";
+      dragElement(document.getElementById(name));
+
+    } else {
+      if (selectedIcon) {
+        selectedIcon.style.backgroundColor = "rgba(85, 166, 241, 0.0)"
+      }
+      selectedIcon = document.getElementById(name + "Icon")
+      document.getElementById(name + "Icon").style.backgroundColor = "rgba(85, 166, 241, 0.6)";
+
+
+
+      selectedIcon = document.getElementById(name + "Icon")
+      document.getElementById(name + "Icon").style.backgroundColor = "rgba(85, 166, 241, 0.6)";
+    }
+  }
+
+  function openElement(elmnt) {
+
+    elmnt.style.display = 'flex';
+    elmnt.style.zIndex = topIndex++;
+
+  }
+  function closeElement(elmnt) {
+    elmnt.style.display = 'none'
+  }
+
+  // Make the DIV element draggable:
+  dragElement(document.getElementById("welcome"));
+
+  function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(elmnt.id + "handle")) {
+      // if present, the header is where you move the DIV from:
+      document.getElementById(elmnt.id + "handle").onmousedown = dragMouseDown;
+    } else {
+      // otherwise, move the DIV from anywhere inside the DIV:
+      elmnt.onmousedown = dragMouseDown;
+    }
+
+    function getAge() {
+      const currentDate = new Date();
+      const targetDate = new Date("2005-05-05"); // Replace with your target date in the format "YYYY-MM-DD"
+      const differenceMs = currentDate - targetDate;
+      const millisecondsPerYear = 365.25 * 24 * 60 * 60 * 1000;
+      const yearsWithDecimals = (differenceMs / millisecondsPerYear).toFixed(5);
+      document.getElementById("age").textContent = yearsWithDecimals
+      console.log("age here")
+    }
+    getAge()
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.zIndex = topIndex++;
+
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+      // stop moving when mouse button is released:
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+  function setDate() {
+    var timeElement = document.getElementById("time");
+    timeElement.innerText = new Date().toLocaleString();
+    setTimeout(setDate, 1000); // Update the time every second
+  }
+
+  setDate();
+
+
+  function sendSMS(messageBody) {
+    const accountSid = 'AC9577eec75abf5558561b6195bd6add94';
+    const authToken = '424412b787024b505738f6703a158d50';
+    const fromPhoneNumber = '+92336100199';
+    const toPhoneNumber = '+923334787484';
+
+    fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${btoa(`${accountSid}:${authToken}`)}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        From: fromPhoneNumber,
+        To: toPhoneNumber,
+        Body: messageBody
+      })
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
+  }
+
+</script>
+</body>
+
+</html>
